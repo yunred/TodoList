@@ -1,0 +1,56 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoList</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="display-flex justify-center">
+        <header>
+          <a href="/" class="text-black">
+            <h1 class="text-center font-bold">🍋TO DO LIST🍍</h1>
+          </a>
+          <nav>
+            <button>Daily</button>
+            <button>Weekly</button>
+            <button>Monthly</button>
+            <button>Yearly</button>
+          </nav>
+        </header>
+        <main class="display-flex justify-center">
+          <div>
+            <div class="display-flex justify-between">
+              <h2>오늘 계획</h2>
+              <span class="todo-count"></span>
+            </div>
+            <form id="daily-form">
+              <div>
+                <label for="daily-todo" class="input-label" hidden>
+                  할 일
+                </label>
+                <input
+                  type="text"
+                  id="daily-todo"
+                  name="dailyTodo"
+                  placeholder="할 일"
+                  autocomplete="off"
+                />
+                <button
+                  type="button"
+                  name="submit"
+                  id="daily-form-submit-button"
+                >
+                  확인
+                </button>
+              </div>
+            </form>
+            <ul id="daily-todo-list"></ul>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script type="module" src="./src/js/index.js"></script>
+  </body>
+</html>
