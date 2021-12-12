@@ -8,11 +8,19 @@
 
 const $ = selector => document.querySelector(selector); //한줄로 써서 해당 부분을 바로 return
 function App() {
-  //TODO 할 일 수정
-  // - 할 일의 수정 버튼을 누르면 prompt창이 뜸
-  // - prompt 인터페이스에서 할 일을 입력받고, 확인버튼을 누르면 할 일이 수정됨
+  const updateTodoCount = () => {
+    const todoCount = $('#daily-todo-list').querySelectorAll('li').length; //querySelectorAll을 사용해서 ul태그 안의 모든 li태그를 가져옴
+    $('.todo-count').innerText = `총 ${todoCount} 개`;
+  };
 
   $('#daily-todo-list').addEventListener('click', e => {
+    if (e.target.classList.contains('todo-remove-button')) {
+      const remove = confirm('삭제하시겠습니까?');
+      if (remove) {
+        e.target.closest('li').remove(); // e.target.closest('li')는 li태그를 통으로 가져옴
+        updateTodoCount();
+      } else return;
+    }
     if (e.target.classList.contains('todo-edit-button')) {
       //수정버튼을 누른 곳에서 제일 가까운 li태그로 타고 올라가서 span태그 선택
       const $todoText = e.target.closest('li').querySelector('.todo-text');
@@ -57,8 +65,7 @@ function App() {
       'beforeend',
       todoItemTemplate(dailytodo)
     );
-    const todoCount = $('#daily-todo-list').querySelectorAll('li').length; //querySelectorAll을 사용해서 모든 li태그를 가져옴
-    $('.todo-count').innerText = `총 ${todoCount}`;
+    updateTodoCount();
     $('#daily-todo').value = ''; //value값 조정
   };
 
@@ -75,8 +82,3 @@ function App() {
 }
 
 App();
-
-//TODO 할 일 삭제
-// - 할 일의 삭제버튼을 누르면 confirm창이 뜸
-// - 확인 버튼을 클릭하면 할 일이 삭제됨
-// - 총 할 일 갯수를 count하여 상단에 보여줌
