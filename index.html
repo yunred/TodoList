@@ -14,47 +14,47 @@
           </a>
           <nav>
             <button data-category-name="daily" class="todo-category-name">
-              Daily
+              ⭐Daily
             </button>
             <button data-category-name="weekly" class="todo-category-name">
-              Weekly
+              🌈Weekly
             </button>
             <button data-category-name="monthly" class="todo-category-name">
-              Monthly
+              🪐Monthly
             </button>
             <button data-category-name="yearly" class="todo-category-name">
-              Yearly
+              💫Yearly
             </button>
           </nav>
         </header>
         <main class="display-flex justify-center">
           <div>
             <div class="display-flex justify-between">
-              <h2>오늘 계획</h2>
+              <h2 id="category-title">📌Daily Plan</h2>
               <span class="todo-count"></span>
             </div>
-            <form id="daily-form">
+            <form id="todo-form">
               <div>
-                <label for="daily-todo" class="input-label" hidden>
+                <label for="todo-text" class="input-label" hidden>
                   할 일
                 </label>
                 <input
                   type="text"
-                  id="daily-todo"
-                  name="dailyTodo"
+                  id="todo-text"
+                  name="todoText"
                   placeholder="할 일"
                   autocomplete="off"
                 />
                 <button
                   type="button"
                   name="submit"
-                  id="daily-form-submit-button"
+                  id="todo-form-submit-button"
                 >
                   확인
                 </button>
               </div>
             </form>
-            <ul id="daily-todo-list"></ul>
+            <ul id="todo-text-list"></ul>
           </div>
         </main>
       </div>
