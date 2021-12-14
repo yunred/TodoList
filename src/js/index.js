@@ -15,14 +15,21 @@ const store = {
     //JSON.stringify()를 이용해서 해당 JSON 객체를 문자열로 저장할 수 있음
   },
   getLocalStorage() {
-    return JSON.parse(localStorage.getItem('todoItem')); //문자열로 저장돈 데이터를 JSON 객체로 변환
+    return JSON.parse(localStorage.getItem('todoItem')); //문자열로 저장된 데이터를 JSON 객체로 변환
   },
 };
 
 function App() {
-  this.todoItem = [];
+  this.todoItem = {
+    daily: [],
+    weekly: [],
+    monthly: [],
+    yearly: [],
+  };
+  this.currentCategory = 'daily'; //현재의 카테고리도 상태값으로 관리, default값:daily
+
   this.init = () => {
-    if (store.getLocalStorage().length > 1) {
+    if (store.getLocalStorage()) {
       this.todoItem = store.getLocalStorage();
     }
     todoRender();
@@ -34,7 +41,7 @@ function App() {
   };
 
   const todoRender = () => {
-    const template = this.todoItem
+    const template = this.todoItem[this.currentCategory]
       .map((item, index) => {
         return `
     <li data-todo-id="${index}" >
@@ -64,7 +71,7 @@ function App() {
       return;
     }
     const dailytodo = $('#daily-todo').value;
-    this.todoItem.push({ text: dailytodo }); //push를 이용해 새로운 객체를 추가함
+    this.todoItem[this.currentCategory].push({ text: dailytodo }); //push를 이용해 새로운 객체를 추가함
     //상태가 변경됐을 때 localStorage에 바로 저장하고 읽어옴
     store.setLocalStorage(this.todoItem);
     //여러개의 item들이 렌더링 되어야 해서 map을 이용해 그 아이템별로 HTML 마크업을 만들 수 있게 함
@@ -115,6 +122,14 @@ function App() {
       return;
     }
     addTodo();
+
+    $('nav').addEventListener('click', e => {
+      const isCategoryButton =
+        e.target.classList.contains('todo-category-name');
+      if (isCategoryButton) {
+        const categoryName = e.target.dataset.categoryName;
+      }
+    });
   });
 }
 
