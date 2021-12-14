@@ -45,7 +45,13 @@ function App() {
       .map((item, index) => {
         return `
     <li data-todo-id="${index}" >
-      <span class="todo-text">${item.text}</span>
+      <span class="todo-text" ${item.done ? 'done' : ''}>${item.text}</span>
+      <button
+        type="button"
+        class="todo-done-button"
+        >
+      ✔
+      </button>
       <button
         type="button"
         class="todo-edit-button"
@@ -99,12 +105,27 @@ function App() {
     } else return;
   };
 
+  const doneTodo = e => {
+    const todoId = e.target.closest('li').dataset.todoId;
+    this.todoItem[this.currentCategory][todoId].done =
+      !this.todoItem[this.currentCategory][todoId].done;
+    store.setLocalStorage(this.todoItem);
+    todoRender();
+  };
+
+  //버튼 클릭 시
   $('#todo-text-list').addEventListener('click', e => {
     if (e.target.classList.contains('todo-remove-button')) {
       removeTodo(e);
+      return;
     }
     if (e.target.classList.contains('todo-edit-button')) {
       editTodo(e);
+      return;
+    }
+    if (e.target.classList.contains('todo-done-button')) {
+      doneTodo(e);
+      return;
     }
   });
 
