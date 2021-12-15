@@ -1,5 +1,20 @@
 import { $ } from './utils/dom.js';
 import store from './store/index.js';
+// [요구사항] - 서버와의 통신을 통한 메뉴 관리
+// - 서버에 새로운 할 일이 추가될 수 있도록 요청
+// - 서버에 카테고리별 메뉴리스트를 불러옴
+// - 서버에 메뉴가 수정될 수 있도록 요청
+// - 서버에 메뉴의 품절상태가 토들 형식으로 변환될 수 있도록 요청
+// - 서버에 메뉴가 삭제될 수 있도록 요청
+
+const Base_URL = 'http://localhost:3000/api';
+
+const TodoApi = {
+  async getAllTodoByCategory(category) {
+    const response = await fetch(`${Base_URL}/category/${category}/todo`);
+    return response.json();
+  },
+};
 
 function App() {
   this.todoItem = {
@@ -10,10 +25,11 @@ function App() {
   };
   this.currentCategory = 'daily'; //현재의 카테고리도 상태값으로 관리, default값:daily
 
-  this.init = () => {
-    if (store.getLocalStorage()) {
-      this.todoItem = store.getLocalStorage();
-    }
+  this.init = async () => {
+    this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
+      this.currentCategory
+    ); //앱을 실행했을 때 카테고리 별 할 일 리스트 불러오는 작업
+
     todoRender();
     initEventListeners();
   };
@@ -54,16 +70,26 @@ function App() {
     updateTodoCount();
   };
 
-  const addTodo = () => {
+  const addTodo = async () => {
     if ($('#todo-text').value === '') {
       alert('값을 입력해주세요');
       return;
     }
     const todoText = $('#todo-text').value;
-    this.todoItem[this.currentCategory].push({ text: todoText }); //push를 이용해 새로운 객체를 추가함
-    //상태가 변경됐을 때 localStorage에 바로 저장하고 읽어옴
-    store.setLocalStorage(this.todoItem);
-    //여러개의 item들이 렌더링 되어야 해서 map을 이용해 그 아이템별로 HTML 마크업을 만들 수 있게 함
+
+    await fetch(`${Base_URL}/category/${this.currentCategory}/todo`, {
+      method: 'POST',
+      headers: {
+        'content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: todoText }),
+    }).then(response => {
+      return response.json();
+    });
+
+    this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
+      this.currentCategory
+    ); //받아온 전체 데이터 todoItem[this.currentCategory]에 추가
     todoRender();
     $('#todo-text').value = '';
   };
