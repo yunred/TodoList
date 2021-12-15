@@ -7,12 +7,52 @@ import store from './store/index.js';
 // - 서버에 메뉴의 품절상태가 토들 형식으로 변환될 수 있도록 요청
 // - 서버에 메뉴가 삭제될 수 있도록 요청
 
-const Base_URL = 'http://localhost:3000/api';
+const BASE_URL = 'http://localhost:3000/api';
 
 const TodoApi = {
   async getAllTodoByCategory(category) {
-    const response = await fetch(`${Base_URL}/category/${category}/todo`);
+    const response = await fetch(`${BASE_URL}/category/${category}/todo`);
     return response.json();
+  },
+  async createTodo(category, text) {
+    const response = await fetch(`${BASE_URL}/category/${category}/todo`, {
+      method: 'POST',
+      headers: {
+        'content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text }),
+    });
+    if (!response.ok) {
+      console.error('에러가 발생했습니다.');
+    }
+    return response.json();
+  },
+  async editTodo(category, todoId, text) {
+    const response = await fetch(
+      `${BASE_URL}/category/${category}/todo/${todoId}`,
+      {
+        method: `PUT`,
+        headers: {
+          'content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      }
+    );
+    if (!response.ok) {
+      console.error('에러가 발생했습니다.');
+    }
+    return response.json();
+  },
+  async toggleDoneTodoItem(category, todoId) {
+    const response = await fetch(
+      `${BASE_URL}/category/${category}/todo/${todoId}/done`,
+      {
+        method: 'PUT',
+      }
+    );
+    if (!response.ok) {
+      console.error('에러가 발생했습니다.');
+    }
   },
 };
 
@@ -29,7 +69,6 @@ function App() {
     this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
       this.currentCategory
     ); //앱을 실행했을 때 카테고리 별 할 일 리스트 불러오는 작업
-
     todoRender();
     initEventListeners();
   };
@@ -41,10 +80,10 @@ function App() {
 
   const todoRender = () => {
     const template = this.todoItem[this.currentCategory]
-      .map((item, index) => {
+      .map(item => {
         return `
-    <li data-todo-id="${index}" >
-      <span class="todo-text" ${item.done ? 'done' : ''}>${item.text}</span>
+    <li data-todo-id="${item.id}" >
+      <span class="todo-text" ${item.isDone ? 'done' : ''}>${item.text}</span>
       <button
         type="button"
         class="todo-done-button"
@@ -76,17 +115,7 @@ function App() {
       return;
     }
     const todoText = $('#todo-text').value;
-
-    await fetch(`${Base_URL}/category/${this.currentCategory}/todo`, {
-      method: 'POST',
-      headers: {
-        'content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text: todoText }),
-    }).then(response => {
-      return response.json();
-    });
-
+    await TodoApi.createTodo(this.currentCategory, todoText); //todoItem 생성
     this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
       this.currentCategory
     ); //받아온 전체 데이터 todoItem[this.currentCategory]에 추가
@@ -94,12 +123,14 @@ function App() {
     $('#todo-text').value = '';
   };
 
-  const editTodo = e => {
+  const editTodo = async e => {
     const todoId = e.target.closest('li').dataset.todoId;
     const $todoText = e.target.closest('li').querySelector('.todo-text');
     const renamedTodoText = prompt('할 일 수정', $todoText.innerText);
-    this.todoItem[this.currentCategory][todoId].text = renamedTodoText;
-    store.setLocalStorage(this.todoItem);
+    await TodoApi.editTodo(this.currentCategory, todoId, renamedTodoText);
+    this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
+      this.currentCategory
+    ); //받아온 전체 데이터 todoItem[this.currentCategory]에 추가
     todoRender();
   };
 
@@ -113,11 +144,12 @@ function App() {
     } else return;
   };
 
-  const doneTodo = e => {
+  const doneTodo = async e => {
     const todoId = e.target.closest('li').dataset.todoId;
-    this.todoItem[this.currentCategory][todoId].done =
-      !this.todoItem[this.currentCategory][todoId].done;
-    store.setLocalStorage(this.todoItem);
+    await TodoApi.toggleDoneTodoItem(this.currentCategory, todoId);
+    this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
+      this.currentCategory
+    ); //받아온 전체 데이터 todoItem[this.currentCategory]에 추가
     todoRender();
   };
 
