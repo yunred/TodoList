@@ -20,7 +20,7 @@ const TodoApi = {
       headers: {
         'content-Type': 'application/json',
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text }), //{text: text}
     });
     if (!response.ok) {
       console.error('에러가 발생했습니다.');
@@ -39,11 +39,11 @@ const TodoApi = {
       }
     );
     if (!response.ok) {
-      console.error('에러가 발생했습니다.');
+      console.error(response);
     }
     return response.json();
   },
-  async toggleDoneTodoItem(category, todoId) {
+  async toggleDoneTodo(category, todoId) {
     const response = await fetch(
       `${BASE_URL}/category/${category}/todo/${todoId}/done`,
       {
@@ -51,7 +51,18 @@ const TodoApi = {
       }
     );
     if (!response.ok) {
-      console.error('에러가 발생했습니다.');
+      console.error(response);
+    }
+  },
+  async deleteTodo(category, todoId) {
+    const response = await fetch(
+      `${BASE_URL}/category/${category}/todo/${todoId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+    if (!response.ok) {
+      console.error(response);
     }
   },
 };
@@ -134,19 +145,21 @@ function App() {
     todoRender();
   };
 
-  const removeTodo = e => {
+  const removeTodo = async e => {
     const remove = confirm('삭제하시겠습니까?');
     if (remove) {
       const todoId = e.target.closest('li').dataset.todoId;
-      this.todoItem[this.currentCategory].splice(todoId, 1);
-      store.setLocalStorage(this.todoItem);
+      await TodoApi.deleteTodo(this.currentCategory, todoId);
+      this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
+        this.currentCategory
+      );
       todoRender();
     } else return;
   };
 
   const doneTodo = async e => {
     const todoId = e.target.closest('li').dataset.todoId;
-    await TodoApi.toggleDoneTodoItem(this.currentCategory, todoId);
+    await TodoApi.toggleDoneTodo(this.currentCategory, todoId);
     this.todoItem[this.currentCategory] = await TodoApi.getAllTodoByCategory(
       this.currentCategory
     ); //받아온 전체 데이터 todoItem[this.currentCategory]에 추가
@@ -186,13 +199,15 @@ function App() {
       addTodo();
     });
 
-    $('nav').addEventListener('click', e => {
+    $('nav').addEventListener('click', async e => {
       const isCategoryButton =
         e.target.classList.contains('todo-category-name');
       if (isCategoryButton) {
         const categoryName = e.target.dataset.categoryName;
         this.currentCategory = categoryName;
         $('#category-title').innerText = `${e.target.innerText} Plan`;
+        this.todoItem[this.currentCategory] =
+          await TodoApi.getAllTodoByCategory(this.currentCategory);
         todoRender();
       }
     });
