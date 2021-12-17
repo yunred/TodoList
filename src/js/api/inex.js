@@ -1,60 +1,75 @@
 const BASE_URL = 'http://localhost:3000/api';
 
-const TodoApi = {
-  async getAllTodoByCategory(category) {
-    const response = await fetch(`${BASE_URL}/category/${category}/todo`);
-    return response.json();
-  },
-  async createTodo(category, text) {
-    const response = await fetch(`${BASE_URL}/category/${category}/todo`, {
+const HTTP_METHOD = {
+  POST(data) {
+    return {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+  },
+  PUT(data) {
+    return {
+      method: 'PUT',
       headers: {
         'content-Type': 'application/json',
       },
-      body: JSON.stringify({ text }), //{text: text}
-    });
-    if (!response.ok) {
-      console.error('에러가 발생했습니다.');
-    }
-    return response.json();
+      body: data ? JSON.stringify({ data }) : null,
+    };
+  },
+  DELETE() {
+    return {
+      method: 'DELETE',
+    };
+  },
+};
+
+const request = async (url, option) => {
+  const response = await fetch(url, option);
+  if (!response.ok) {
+    alert('에러가 발생했습니다.');
+    console.error(e);
+  }
+  return response.json();
+};
+
+const requestWithoutJson = async (url, option) => {
+  const response = await fetch(url, option);
+  if (!response.ok) {
+    alert('에러가 발생했습니다.');
+    console.error(e);
+  }
+};
+
+const TodoApi = {
+  async getAllTodoByCategory(category) {
+    return request(`${BASE_URL}/category/${category}/todo`);
+  },
+  async createTodo(category, text) {
+    return request(
+      `${BASE_URL}/category/${category}/todo`,
+      HTTP_METHOD.POST({ text })
+    );
   },
   async editTodo(category, todoId, text) {
-    const response = await fetch(
+    return request(
       `${BASE_URL}/category/${category}/todo/${todoId}`,
-      {
-        method: `PUT`,
-        headers: {
-          'content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-      }
+      HTTP_METHOD.PUT({ text })
     );
-    if (!response.ok) {
-      console.error(response);
-    }
-    return response.json();
   },
   async toggleDoneTodo(category, todoId) {
-    const response = await fetch(
+    return request(
       `${BASE_URL}/category/${category}/todo/${todoId}/done`,
-      {
-        method: 'PUT',
-      }
+      HTTP_METHOD.PUT()
     );
-    if (!response.ok) {
-      console.error(response);
-    }
   },
   async deleteTodo(category, todoId) {
-    const response = await fetch(
+    return requestWithoutJson(
       `${BASE_URL}/category/${category}/todo/${todoId}`,
-      {
-        method: 'DELETE',
-      }
+      HTTP_METHOD.DELETE()
     );
-    if (!response.ok) {
-      console.error(response);
-    }
   },
 };
 
