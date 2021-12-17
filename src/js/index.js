@@ -61,6 +61,14 @@ function App() {
       return;
     }
     const todoText = $('#todo-text').value;
+    const duplicatedItem = this.todoItem[this.currentCategory].find(
+      e => e.text === todoText
+    );
+    if (duplicatedItem) {
+      alert('이미 등록된 할 일입니다.');
+      $('#todo-text').value = '';
+      return;
+    }
     await TodoApi.createTodo(this.currentCategory, todoText); //todoItem 생성
     todoRender();
     $('#todo-text').value = '';
