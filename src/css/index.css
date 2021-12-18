@@ -1,0 +1,107 @@
+:root {
+  /*color*/
+  --white-color: #fff;
+  --black-color: rgb(14, 8, 8);
+  --grey-dark-color: rgb(107, 107, 107);
+  --bg-color: #D2D2FF;
+  --btn-hover-bg-color: #A0A0FF;
+
+
+  /*size*/
+  --padding1: 2rem;
+  --padding2: 4rem;
+  --padding3: 8rem;
+
+  /*font size*/
+  --font-large: 18px;
+  --font-medium: 14px;
+  --font-small: 12px;
+  --font-micro: 10px;
+  --font-icon: 16px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background: var(--bg-color);
+  /*paddng, margin 포함되서 사이즈가 결정되도록*/
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+header {
+  width:52rem;
+  padding: var(--padding1) var(--padding3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+a {
+  margin-bottom: var(--padding1);
+  font: var(--black-color);
+}
+a h1{
+  text-decoration: none;
+}
+
+
+#app {
+  padding-left: var(--padding1);
+  padding-right: var(--padding1);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+nav{
+  width:36rem;
+  display: flex;
+  justify-content: space-around;
+}
+main{
+  padding: var(--padding1) var(--padding3);
+  margin-top: var(--padding1);
+}
+
+.category-todo-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+
+  background: var(--white-color);
+  color: var(--black-color);
+  
+  margin: 0;
+  padding: 0.5rem 1rem;
+  
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  
+  border: none;
+  border-radius: 4px;
+  
+  display: inline-block;
+  width: auto;
+  
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  cursor: pointer;
+  
+  transition: 0.5s;
+}
+
+button:active,
+button:hover,
+button:focus {
+  background: var(--btn-hover-bg-color);
+  outline: 0;
+}
