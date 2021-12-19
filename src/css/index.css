@@ -5,6 +5,7 @@
   --grey-dark-color: rgb(107, 107, 107);
   --bg-color: #D2D2FF;
   --btn-hover-bg-color: #A0A0FF;
+  --input-bg-color:#e9e9ff;
 
 
   /*size*/
@@ -13,6 +14,10 @@
   --padding3: 8rem;
 
   /*font size*/
+
+  --font-large4: 32px;
+  --font-large3: 28px;
+  --font-large2: 24px;
   --font-large: 18px;
   --font-medium: 14px;
   --font-small: 12px;
@@ -24,26 +29,27 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background: var(--bg-color);
   /*paddng, margin 포함되서 사이즈가 결정되도록*/
 }
 
 body {
   font-family: 'Montserrat', sans-serif;
+  background: var(--bg-color);
 }
 header {
   width:52rem;
-  padding: var(--padding1) var(--padding3);
+  padding: var(--padding1) var(--padding1);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 a {
   margin-bottom: var(--padding1);
-  font: var(--black-color);
-}
-a h1{
+  color: var(--black-color);
   text-decoration: none;
+}
+a span{
+  font-size:var(--font-large4);
 }
 
 
@@ -57,6 +63,7 @@ a h1{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 4px;
 }
 nav{
   width:36rem;
@@ -64,16 +71,25 @@ nav{
   justify-content: space-around;
 }
 main{
-  padding: var(--padding1) var(--padding3);
+  padding: var(--padding1) var(--padding1);
   margin-top: var(--padding1);
+  background-color: var(--white-color);
 }
 
 .category-todo-info {
+  width:36rem;
   display: flex;
   justify-content: space-between;
-}
+  margin-bottom: var(--padding1);
 
-button {
+}
+#category-title{
+  font-size:var(--font-large3);
+}
+.todo-count{
+  padding-top: 8px;
+}
+.todo-category-name {
 
   background: var(--white-color);
   color: var(--black-color);
@@ -99,9 +115,80 @@ button {
   transition: 0.5s;
 }
 
-button:active,
-button:hover,
-button:focus {
+.todo-category-name:active,
+.todo-category-name:hover,
+.todo-category-name:focus {
   background: var(--btn-hover-bg-color);
   outline: 0;
+}
+
+#todo-form{
+  display: flex;
+}
+#todo-text{
+  width: 26rem;
+  height: 3rem;
+  border: none;
+  background: var(--input-bg-color);
+  border-radius: 4px;
+  padding-left: var(--font-small);
+
+}
+
+#todo-text:focus {outline:none;}
+
+#todo-form-submit-button{
+  height: 3rem;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  display: inline-block;
+  width: auto;
+  background: var(--btn-hover-bg-color);
+  box-shadow: none;
+}
+
+.todo-list-button{
+  height: 1.6rem;
+  width: auto;
+  border: none;
+  border-radius: 4px;
+  display: inline-block;
+  padding: 0 5px;
+  background: var(--input-bg-color);
+  color:var(--grey-dark-color);
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.todo-done-button{
+  background-color: var(--white-color);
+  height: 1.6rem;
+  width: 1.6rem;
+  border: 1px solid var(--btn-hover-bg-color);
+  color:var(--btn-hover-bg-color)
+}
+
+
+ul{
+  margin-top: var(--padding1);
+  list-style: none;
+}
+
+li{
+  height: 2.4rem;
+  width: 34rem;
+  border-bottom: 1px dashed var(--btn-hover-bg-color);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+li div{
+  margin: auto 0;
+}
+.done{
+  text-decoration: line-through;
+  color:gray;
 }
