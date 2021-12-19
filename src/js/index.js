@@ -1,6 +1,6 @@
 import { $ } from './utils/dom.js';
 import store from './store/index.js';
-import TodoApi from './api/inex.js';
+import TodoApi from './api/index.js';
 
 function App() {
   this.todoItem = {
@@ -29,25 +29,29 @@ function App() {
       .map(item => {
         return `
     <li data-todo-id="${item.id}" >
-      <span class="todo-text" ${item.isDone ? 'done' : ''}>${item.text}</span>
-      <button
+      <div>
+        <button
+          type="button"
+          class="todo-done-button"
+          />
+          ${item.isDone ? '✔' : '　'}
+          </button>
+        <span class="todo-text ${item.isDone ? 'done' : ''}">${item.text}</span>
+      </div>    
+      <div>    
+        <button
+          type="button"
+          class="todo-edit-button todo-list-button"
+          >
+        수정
+        </button>
+        <button
         type="button"
-        class="todo-done-button"
-        >
-      ✔
-      </button>
-      <button
-        type="button"
-        class="todo-edit-button"
-        >
-      수정
-      </button>
-      <button
-      type="button"
-      class="todo-remove-button"
-        >
-      삭제
-      </button>
+        class="todo-remove-button todo-list-button"
+          >
+        삭제
+        </button>
+      </div>  
     </li>`;
       })
       .join('');
