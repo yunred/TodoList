@@ -1,5 +1,4 @@
 import { $ } from './utils/dom.js';
-import store from './store/index.js';
 import TodoApi from './api/index.js';
 
 function App() {
@@ -58,18 +57,22 @@ function App() {
     $('#todo-text-list').innerHTML = template;
     updateTodoCount();
   };
-
+  const isDuplicate = e =>{
+    const duplicatedItem = this.todoItem[this.currentCategory].find(
+      item => item.text === e
+    );
+    if (duplicatedItem) {
+      alert('이미 등록된 할 일입니다.');
+      return 1;
+    }
+  }
   const addTodo = async () => {
     if ($('#todo-text').value === '') {
       alert('값을 입력해주세요');
       return;
     }
     const todoText = $('#todo-text').value;
-    const duplicatedItem = this.todoItem[this.currentCategory].find(
-      e => e.text === todoText
-    );
-    if (duplicatedItem) {
-      alert('이미 등록된 할 일입니다.');
+    if(isDuplicate(todoText) === 1) {
       $('#todo-text').value = '';
       return;
     }
@@ -82,7 +85,8 @@ function App() {
     const todoId = e.target.closest('li').dataset.todoId;
     const $todoText = e.target.closest('li').querySelector('.todo-text');
     const renamedTodoText = prompt('할 일 수정', $todoText.innerText);
-    await TodoApi.editTodo(this.currentCategory, todoId, renamedTodoText);
+    if(isDuplicate(renamedTodoText)===1) return;
+    await TodoApi.changeTodo(this.currentCategory, todoId, renamedTodoText);
     todoRender();
   };
 

@@ -16,7 +16,7 @@ const HTTP_METHOD = {
       headers: {
         'content-Type': 'application/json',
       },
-      body: data ? JSON.stringify({ data }) : null,
+      body: data ? JSON.stringify(data) : null,
     };
   },
   DELETE() {
@@ -27,10 +27,10 @@ const HTTP_METHOD = {
 };
 
 const request = async (url, option) => {
-  const response = await fetch(url, option);
-  if (!response.ok) {
-    alert('에러가 발생했습니다.');
-    console.error(e);
+  const response = await fetch(url, option); 
+  if (!response.ok && !response.status===500) {
+     alert('에러가 발생했습니다.');
+     console.error(response);
   }
   return response.json();
 };
@@ -39,7 +39,7 @@ const requestWithoutJson = async (url, option) => {
   const response = await fetch(url, option);
   if (!response.ok) {
     alert('에러가 발생했습니다.');
-    console.error(e);
+    console.error(response);
   }
 };
 
@@ -53,10 +53,10 @@ const TodoApi = {
       HTTP_METHOD.POST({ text })
     );
   },
-  async editTodo(category, todoId, text) {
+  async changeTodo(category, todoId, text) {
     return request(
       `${BASE_URL}/category/${category}/todo/${todoId}`,
-      HTTP_METHOD.PUT({ text })
+      HTTP_METHOD.PUT({text})
     );
   },
   async toggleDoneTodo(category, todoId) {
