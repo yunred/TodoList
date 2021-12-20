@@ -5,6 +5,10 @@
 
 <br/><br/>
 
+# 📆기간
+- 2021.12.10 ~ 2021-12.20
+
+<br/><br/>
 
 # 🎞영상
 <img width="100%" src="https://user-images.githubusercontent.com/84527643/146718137-5a321291-3ed5-4e68-b6c0-c3f0630c434c.gif"/>
