@@ -70,9 +70,44 @@ nav{
   display: flex;
   justify-content: space-around;
 }
+section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40rem;
+  background-color: var(--white-color);
+  border-radius: 4px;
+  border:6px dashed var(--input-bg-color);
+  margin: 0.4rem;
+  height: 8rem;
+}
+.emoji span{
+  font-size: var(--font-large2);
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+.emoji div{
+  width: 30rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+.emotion{
+  opacity: 0.15;
+  font-size: var(--font-large3);
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+  border: none;
+}
+
+.emotion:hover, .selected{
+  opacity: 1;
+
+}
+
 main{
   padding: var(--padding1) var(--padding1);
-  margin-top: var(--padding1);
+  margin-top: 1rem;
   background-color: var(--white-color);
 }
 
@@ -122,8 +157,9 @@ main{
   outline: 0;
 }
 
-#todo-form{
+#todo-form div{
   display: flex;
+  margin: 0 auto;
 }
 #todo-text{
   width: 26rem;
@@ -139,7 +175,7 @@ main{
 
 #todo-form-submit-button{
   height: 3rem;
-  margin: 0;
+  margin-left: 0.6rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
@@ -162,6 +198,9 @@ main{
   text-decoration: none;
   font-size: 1rem;
   font-weight: 400;
+}
+.todo-list-button:hover{
+  background: var(--btn-hover-bg-color);
 }
 .todo-done-button{
   background-color: var(--white-color);
