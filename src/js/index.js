@@ -132,6 +132,22 @@ function App() {
       }
     });
 
+    //감정버튼 선택 시
+    $('#select-emotion').addEventListener('click', e=> {
+      if(e.target.classList.contains('emotion')){
+        if(!e.target.classList.contains('selected')){
+          let emotions = document.querySelectorAll('.emotion');
+          [].forEach.call(emotions, function(el){
+            el.classList.remove('selected');
+          })
+          e.target.classList.add('selected');
+          return;
+        }if(e.target.classList.contains('selected')){
+          e.target.classList.remove('selected');
+        }
+      }
+    })
+
     //submit 이벤트가 발생했을 때 form태그 자동으로 전송되는 것을 막아줌
     $('#todo-form').addEventListener('submit', e => {
       e.preventDefault();
